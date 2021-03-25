@@ -1,16 +1,21 @@
-const { json } = require("express");
+require('dotenv/config');
+const { json, response } = require("express");
 var express = require("express");
 var router = express.Router();
 const fetch = require("node-fetch");
 const app = express();
 const ejs = require('ejs');
-//let ejs = require("ejs");
+const expressLayouts = require('express-ejs-layouts');
 
-app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
+//use layout
+app.use(expressLayouts);
+app.set('layout', './views/layout');
+app.set('view engine', 'ejs');
 
-const url = 'https://app.ticketmaster.com/discovery/v2/events?apikey=lEQ7UsGACLAA2yaJ47Xt5hJPLK75W3Is&locale=*';
+
+const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}&locale=*`;
 
 async function getapi(url) {
 
@@ -42,11 +47,23 @@ router.get('/list', async (req, res, next) => {
   res.render('list', { allEvents: toonEvents });
 });
 
+router.get('/details/:id', async(req, res, next) => {
+  let eventId = req.params.id;
+  if(eventId) {
+    let eventData = await fetch(`https://app.ticketmaster.com/discovery/v2/events/${eventId}?apikey=${process.env.API_KEY}&locale=*`)
+    .then((response) => response.json())
+    .then((json) => 
+    res.render('details', {eventData: json})
+    )
+    .catch((e) => console.error(e));
+    
+  }
+})
+
 const loadAllEventData = async () => {
-  let response = await fetch('https://app.ticketmaster.com/discovery/v2/events?apikey=lEQ7UsGACLAA2yaJ47Xt5hJPLK75W3Is&locale=*');
+  let response = await fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}&locale=*`);
   let json = await response.json();
   let event = json._embedded.events;
-
 
   return event;
 }
