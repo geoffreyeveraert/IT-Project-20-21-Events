@@ -47,16 +47,22 @@ router.get('/list', async (req, res, next) => {
   res.render('list', { allEvents: toonEvents });
 });
 
-router.get('/details/:id', async(req, res, next) => {
+router.get('/details/:id', async (req, res, next) => {
   let eventId = req.params.id;
-  if(eventId) {
+  if (eventId) {
     let eventData = await fetch(`https://app.ticketmaster.com/discovery/v2/events/${eventId}?apikey=${process.env.API_KEY}&locale=*`)
-    .then((response) => response.json())
-    .then((json) => 
-    res.render('details', {eventData: json})
-    )
-    .catch((e) => console.error(e));
-    
+      .then((response) => response.json())
+      .then((json) => {
+        if(json.errors)
+          return res.sendStatus(Number.parseInt(json.errors[0].status))
+        else
+          return res.render('details', { eventData: json })
+      }
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+
   }
 })
 
