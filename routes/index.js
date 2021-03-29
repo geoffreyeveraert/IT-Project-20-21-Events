@@ -28,31 +28,32 @@ getapi(url);
 
 /* GET home page. */
 router.get("/", async (req, res, next) => {
-  // Hier komt de fetch
-  fetch(url)
+  let id = "";
+  let keyword = "";
+  let city = "";
+  let locale = "";
+  let size = "";
+  let page = "";
+
+  req.query.id ? (id = `&id=${req.query.id}`) : (id = "");
+  req.query.keyword
+    ? (keyword = `&keyword=${req.query.keyword}`)
+    : (keyword = "");
+  req.query.city ? (city = `&city=${req.query.city}`) : (city = "");
+  req.query.locale ? (locale = `&locale=${req.query.locale}`) : (locale = "");
+  req.query.size ? (size = `&size=${req.query.size}`) : (size = "");
+  req.query.page ? (page = `&page=${req.query.page}`) : (page = "");
+
+  console.log("query", req.query);
+
+  fetch(
+    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}${id}${keyword}${locale}${city}${size}${page}`
+  )
     .then((response) => response.json())
     .then((json) =>
       res.render("index", {
         result: JSON.stringify(json._embedded.events),
       })
-    )
-    .catch((e) => console.error(e));
-});
-
-let id = "";
-/* GET home page. Event detail */
-router.get(`/:id?`, async (req, res, next) => {
-  let id = `id=${req.params.id}`;
-  let keyword = `&keyword=${req.params.keyword}`;
-  let city = `&city=${req.params.city}`;
-  let locale = `&locale=${req.params.locale}`;
-
-  fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}${id}${keyword}${locale}${city}`
-  )
-    .then((response) => response.json())
-    .then((json) =>
-      res.render("index", { result: JSON.stringify(json._embedded.events) })
     )
     .catch((e) => console.error(e));
 });
