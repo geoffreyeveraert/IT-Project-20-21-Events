@@ -42,10 +42,13 @@ router.get("/", async (req, res, next) => {
 let id = "";
 /* GET home page. Event detail */
 router.get(`/:id?`, async (req, res, next) => {
-  let id = req.params.id;
+  let id = `id=${req.params.id}`;
+  let keyword = `&keyword=${req.params.keyword}`;
+  let city = `&city=${req.params.city}`;
+  let locale = `&locale=${req.params.locale}`;
 
   fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=lEQ7UsGACLAA2yaJ47Xt5hJPLK75W3Is&id=${id}&locale=*`
+    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}${id}${keyword}${locale}${city}`
   )
     .then((response) => response.json())
     .then((json) =>
