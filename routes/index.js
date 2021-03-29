@@ -29,9 +29,7 @@ getapi(url);
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   // Hier komt de fetch
-  fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=lEQ7UsGACLAA2yaJ47Xt5hJPLK75W3Is&locale=*`
-  )
+  fetch(url)
     .then((response) => response.json())
     .then((json) =>
       res.render("index", {
@@ -72,6 +70,14 @@ router.get("/details/:id", async (req, res, next) => {
         console.log(error);
       });
   }
+});
+
+router.get("/list", async (req, res, next) => {
+  const allEvents = await loadAllEventData();
+
+  const toonEvents = getMyEvents(allEvents);
+  console.log(toonEvents);
+  res.render("list", { allEvents: toonEvents });
 });
 
 const loadAllEventData = async () => {
