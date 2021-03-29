@@ -43,44 +43,40 @@ router.get("/", async (req, res, next) => {
   req.query.size ? (size = `&size=${req.query.size}`) : (size = "");
   req.query.page ? (page = `&page=${req.query.page}`) : (page = "");
 
-  console.log("query", req.query);
-
   fetch(
     `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}${id}${keyword}${locale}${city}${size}${page}`
   )
-  .then((response) => {
-    if(!response.ok){
-      switch(response.status){          
-        case 400:
-          console.log('Er is een lokale error opgetreden')
-          break;
+    .then((response) => {
+      if (!response.ok) {
+        switch (response.status) {
+          case 400:
+            console.log("Er is een lokale error opgetreden");
+            break;
 
-        case 404:
-          console.log('De pagina kan niet gevonden worden');
-          break;
-    
-        case 500:
-          console.log('Er is een error op de server opgetreden');
-          break;
-    
-        default:
-          console.log(`Er is een ${response.status} status fout opgetreden.`);
-          break;
+          case 404:
+            console.log("De pagina kan niet gevonden worden");
+            break;
+
+          case 500:
+            console.log("Er is een error op de server opgetreden");
+            break;
+
+          default:
+            console.log(`Er is een ${response.status} status fout opgetreden.`);
+            break;
+        }
+      } else {
+        return response.json();
       }
-    }
-    else{
-      return response.json();
-    }
-  })
-  .then((json) => {
-    if(json.page.totalElements === 0){
-      res.render("index", {result: "Geen resultaten beschikbaar"})
-    }
-    else{
-      res.render("index", { result: JSON.stringify(json._embedded.events) })
-    }
-  })
-  .catch((e) => console.error(e));
+    })
+    .then((json) => {
+      if (json.page.totalElements === 0) {
+        res.render("index", { result: "Geen resultaten beschikbaar" });
+      } else {
+        res.render("index", { result: JSON.stringify(json._embedded.events) });
+      }
+    })
+    .catch((e) => console.error(e));
 });
 
 router.get("/details/:id", async (req, res, next) => {
@@ -103,9 +99,7 @@ router.get("/details/:id", async (req, res, next) => {
 
 router.get("/list", async (req, res, next) => {
   const allEvents = await loadAllEventData();
-
   const toonEvents = getMyEvents(allEvents);
-  console.log(toonEvents);
   res.render("list", { allEvents: toonEvents });
 });
 
