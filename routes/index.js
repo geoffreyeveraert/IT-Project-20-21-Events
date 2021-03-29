@@ -78,7 +78,7 @@ const getMyEvents = (allEvents) => {
   let eventsName = [];
   allEvents
     .map(eventsNameMap =>
-      eventsName.push({ name: eventsNameMap.name }
+      eventsName.push({ name: eventsNameMap.name, id: eventsNameMap.id }
       )
     )
   return eventsName;
