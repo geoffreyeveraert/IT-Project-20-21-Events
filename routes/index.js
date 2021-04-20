@@ -71,7 +71,7 @@ router.get("/", async (req, res, next) => {
     })
     .then((json) => {
       if (json.page.totalElements === 0) {
-        res.render("index", { result: "Geen resultaten beschikbaar" });
+        res.render("index", { result: 0 });
       } else {
         res.render("index", { result: JSON.stringify(json._embedded.events) });
       }
