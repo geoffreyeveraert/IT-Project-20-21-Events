@@ -115,9 +115,11 @@ const loadAllEventData = async () => {
 
 const getMyEvents = (allEvents) => {
   let eventsName = [];
-  allEvents.map((eventsNameMap) =>
-    eventsName.push({ name: eventsNameMap.name })
-  );
+  allEvents
+    .map(eventsNameMap =>
+      eventsName.push({ name: eventsNameMap.name, id: eventsNameMap.id }
+      )
+    )
   return eventsName;
 };
 
