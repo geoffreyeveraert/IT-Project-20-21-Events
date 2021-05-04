@@ -70,7 +70,7 @@ router.get("/", async (req, res, next) => {
     })
     .then((json) => {
       if (json.page.totalElements === 0) {
-        res.render("index", { result: 0 });
+        res.render("index", { result: json.page.totalElements });
       } else {
         console.log("test", json.page.totalElements);
 
