@@ -27,10 +27,10 @@ getapi(url);
 
 /* GET home page. */
 router.get("/", async (req, res, next) => {
+  let url = "https://app.ticketmaster.com/discovery/v2/events?apikey=";
   let id = "";
   let keyword = "";
   let city = "";
-  let locale = "";
   let size = "";
   let page = "";
 
@@ -39,12 +39,11 @@ router.get("/", async (req, res, next) => {
     ? (keyword = `&keyword=${req.query.keyword}`)
     : (keyword = "");
   req.query.city ? (city = `&city=${req.query.city}`) : (city = "");
-  req.query.locale ? (locale = `&locale=${req.query.locale}`) : (locale = "");
   req.query.size ? (size = `&size=${req.query.size}`) : (size = "");
   req.query.page ? (page = `&page=${req.query.page}`) : (page = "");
 
   fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}${id}${keyword}${locale}${city}${size}${page}`
+    `${url}${process.env.API_KEY}${id}${keyword}&locale=*${city}${size}${page}`
   )
     .then((response) => {
       if (!response.ok) {
@@ -73,6 +72,8 @@ router.get("/", async (req, res, next) => {
       if (json.page.totalElements === 0) {
         res.render("index", { result: 0 });
       } else {
+        console.log("test", json.page.totalElements);
+
         res.render("index", { result: JSON.stringify(json._embedded.events) });
       }
     })
@@ -115,11 +116,9 @@ const loadAllEventData = async () => {
 
 const getMyEvents = (allEvents) => {
   let eventsName = [];
-  allEvents
-    .map(eventsNameMap =>
-      eventsName.push({ name: eventsNameMap.name, id: eventsNameMap.id }
-      )
-    )
+  allEvents.map((eventsNameMap) =>
+    eventsName.push({ name: eventsNameMap.name, id: eventsNameMap.id })
+  );
   return eventsName;
 };
 
