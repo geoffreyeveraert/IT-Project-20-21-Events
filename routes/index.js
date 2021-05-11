@@ -14,17 +14,6 @@ app.use(expressLayouts);
 app.set("layout", "./views/layout");
 app.set("view engine", "ejs");
 
-const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}&locale=*`;
-
-async function getapi(url) {
-  // Storing response
-  const response = await fetch(url);
-
-  // Storing data in form of JSON
-  var data = await response.json();
-}
-getapi(url);
-
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   let url = "https://app.ticketmaster.com/discovery/v2/events?apikey=";
@@ -74,52 +63,10 @@ router.get("/", async (req, res, next) => {
       } else {
         console.log("test", json.page.totalElements);
 
-        res.render("index", { result: JSON.stringify(json._embedded.events) });
+        res.render("index", { result: json._embedded.events });
       }
     })
     .catch((e) => console.error(e));
 });
-
-router.get("/details/:id", async (req, res, next) => {
-  let eventId = req.params.id;
-  if (eventId) {
-    let eventData = await fetch(
-      `https://app.ticketmaster.com/discovery/v2/events/${eventId}?apikey=${process.env.API_KEY}&locale=*`
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.errors)
-          return res.sendStatus(Number.parseInt(json.errors[0].status));
-        else return res.render("details", { eventData: json });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-});
-
-router.get("/list", async (req, res, next) => {
-  const allEvents = await loadAllEventData();
-  const toonEvents = getMyEvents(allEvents);
-  res.render("list", { allEvents: toonEvents });
-});
-
-const loadAllEventData = async () => {
-  let response = await fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}&locale=*`
-  );
-  let json = await response.json();
-  let event = json._embedded.events;
-
-  return event;
-};
-
-const getMyEvents = (allEvents) => {
-  let eventsName = [];
-  allEvents.map((eventsNameMap) =>
-    eventsName.push({ name: eventsNameMap.name, id: eventsNameMap.id })
-  );
-  return eventsName;
-};
 
 module.exports = router;
