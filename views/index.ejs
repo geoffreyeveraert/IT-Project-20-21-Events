@@ -41,10 +41,6 @@
   }
 </script>
 
-<br />
-<br />
-<br />
-
 <% if(result === 0) { %>
 <div class="card" style="margin: 30px auto; max-width: 800px; height: 150px">
   <div
@@ -55,14 +51,10 @@
     <p class="card-text">Pas je zoektermen aan en probeer opnieuw.</p>
   </div>
 </div>
-<% } else {  %>
-  <div>
-    <%- include('list.ejs', {events: result}); %>
-  </div>
-  
-  <% } %>
-  <!--
+<% } else { %>
+<div><%- include('list.ejs', {events: result}); %></div>
+
+<% } %>
+<!--
   
   -->
-
-
