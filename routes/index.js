@@ -66,7 +66,7 @@ router.get("/", async (req, res, next) => {
       } else {
         console.log("test", json.page.totalElements);
 
-        res.render("index", { result: json._embedded.events, pageInfo: json.page });
+        res.render("index", { result: json._embedded.events, pageInfo: json.page, currentKeyword: keyword, currentCity: city, testNumber: 5 });
       }
     })
     .catch((e) => console.error(e));
