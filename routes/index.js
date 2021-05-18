@@ -6,6 +6,9 @@ const fetch = require("node-fetch");
 const app = express();
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
+var paginate = require('paginate')();
+
+
 
 app.use(express.static(__dirname + "/public"));
 
@@ -63,7 +66,7 @@ router.get("/", async (req, res, next) => {
       } else {
         console.log("test", json.page.totalElements);
 
-        res.render("index", { result: json._embedded.events });
+        res.render("index", { result: json._embedded.events, pageInfo: json.page });
       }
     })
     .catch((e) => console.error(e));
@@ -101,5 +104,7 @@ const loadAllEventData = async () => {
 
   return event;
 };
+
+
 
 module.exports = router;
