@@ -1,0 +1,18 @@
+<% allEvents.forEach(function(listview, index) {%>
+    <div class="accordion">
+        <div class="card my-4">
+            <div class="card-header" id="heading<%= index %>">
+                <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapse<%= index %>" aria-expanded="true" aria-controls="collapse<%= index %>">
+                        <%= listview.name %>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapse<%= index %>" class="collapse" aria-labelledby="heading<%= index %>" data-parent="#accordion">
+                <div class="card-body">
+                <%- include('details.ejs', {eventData: listview}); %>
+                </div>
+              </div>
+        </div>
+    </div>
+<%});%>
