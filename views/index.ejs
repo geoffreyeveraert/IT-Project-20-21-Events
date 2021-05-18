@@ -55,37 +55,14 @@
     <p class="card-text">Pas je zoektermen aan en probeer opnieuw.</p>
   </div>
 </div>
-<% } else { result.map(item => { %>
-  <div class="accordion" id="accordionExample">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingOne">
-        <button
-          class="accordion-button"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseOne"
-          aria-expanded="true"
-          aria-controls="collapseOne"
-        >
-          <%= item.name %>
-        </button>
-      </h2>
-      <div
-        id="collapseOne"
-        class="accordion-collapse collapse show"
-        aria-labelledby="headingOne"
-        data-bs-parent="#accordionExample"
-      >
-        <div class="accordion-body">
-          <strong>Venue: <%= item._embedded.venues[0].name %> </strong> <br>
-          <strong> City: <%= item._embedded.venues[0].city.name %></strong>
-          <p>Date: <%= item.dates.start.localDate  %></p>
-          <p><%= item.description ? 'Description: '+item.description: '' %></p>
-        </div>
-      </div>
-    </div>
-    </div>
-    <% }) %>
+<% } else {  %>
+  <div>
+    <%- include('list.ejs', {events: result}); %>
+  </div>
+  
   <% } %>
+  <!--
+  
+  -->
 
 
