@@ -48,7 +48,7 @@
         '<% }) %>'
     '<% } %>'
     
-    var map = L.map('map<%= index %>').setView([Number(longFirst), Number(latFirst)], 13);
+    var map = L.map('map<%= index %>').setView([Number(latFirst), Number(longFirst)], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -57,7 +57,7 @@
     '<% if(venue.location) { %> '
     var long = '<%= venue.location.longitude %>';
     var lat = '<%= venue.location.latitude %>';
-    L.marker([Number(long), Number(lat)]).addTo(map)
+    L.marker([Number(lat), Number(long)]).addTo(map)
         .bindPopup('<%= venue.name %>')
         .openPopup();
     '<% } %>'
