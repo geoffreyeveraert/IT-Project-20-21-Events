@@ -6,7 +6,6 @@ const fetch = require("node-fetch");
 const app = express();
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
-var paginate = require('paginate')();
 
 
 
