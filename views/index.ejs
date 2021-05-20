@@ -37,7 +37,7 @@
     keyword = document.getElementById("keyword").value;
     city = document.getElementById("city").value;
     window.location.replace(
-      `http://localhost:5000/?keyword=${keyword}&city=${city}`
+      `http://localhost:5000/?keyword=${keyword}&city=${city}&page=0`
     );
     console.log(name);
   }
@@ -63,21 +63,41 @@
     <br/>
     <nav aria-label="Page navigation example" >
       <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
+        <% if (currentPage > 0) { %>
+        <li class="page-item" id="previous">
+          <a class="page-link" aria-label="Previous" onclick="window.location.href = '?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage - 1 %>'">
             <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only"></span>
           </a>
         </li>
-        <% for(var i = 0 ; i < pageInfo.totalPages; i++) { %>
-          <li class="page-item" value="<%=i %>"><a class="page-link" onclick="console.log(`<%=currentKeyword %><%=currentCity %>&page=<%=testNumber++ %>`)"><%= i %></a></li>
+        <% } %>
+        <% let pageAmount; let activeNumber; %>
+        <% pageInfo.totalPages > 20 ? pageAmount = 20 : pageAmount = pageInfo.totalPages %>
+        <% if (currentPage > 0){ %>
+          <li class="page-item" value="<%=0 %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`">1</a></li>
+        <% } %>
+        <% if (currentPage > 1){ %>
+          <li class="page-item"><a class="page-link">...</a></li>
+        <% } %>
+        <% for(var i = 0 ; i < pageAmount; i++) { %>
+          <% if ((i+currentPage) == currentPage) {%>
+          <li class="page-item active" value="<%=i+currentPage %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"><%= (i + currentPage) +1 %></a></li>
+          <% } else { %>
+            <li class="page-item" value="<%=i+currentPage %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"><%= (i + currentPage) +1 %></a></li>
           <% } %>
+        <% } %>
+        <% if (currentPage < pageInfo.totalPages - 1){ %>
+          <li class="page-item"><a class="page-link">...</a></li>
+        <% } %>
+        <li class="page-item" value="<%=pageInfo.totalPages%>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=pageInfo.totalPages-1 %>`"><%= pageInfo.totalPages %></a></li>
+        <% if(currentPage != pageInfo.totalPages) { %>
         <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
+          <a class="page-link" aria-label="Next" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage + 1 %>`">
             <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only"></span>
           </a>
         </li>
+        <% } %>
       </ul>
     </nav>
   </div>
