@@ -7,6 +7,8 @@ const app = express();
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
 
+
+
 app.use(express.static(__dirname + "/public"));
 
 //use layout
@@ -63,7 +65,7 @@ router.get("/", async (req, res, next) => {
       } else {
         console.log("test", json.page.totalElements);
 
-        res.render("index", { result: json._embedded.events });
+        res.render("index", { result: json._embedded.events, pageInfo: json.page, currentKeyword: keyword, currentCity: city, currentPage: Number(page.slice(6)), testNumber: 5 });
       }
     })
     .catch((e) => console.error(e));
@@ -101,5 +103,7 @@ const loadAllEventData = async () => {
 
   return event;
 };
+
+
 
 module.exports = router;
