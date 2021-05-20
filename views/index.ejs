@@ -27,6 +27,8 @@
   </div>
 </form>
 
+
+
 <script>
   function searchFunction() {
     event.preventDefault();
@@ -41,6 +43,10 @@
   }
 </script>
 
+<br />
+<br />
+<br />
+
 <% if(result === 0) { %>
 <div class="card" style="margin: 30px auto; max-width: 800px; height: 150px">
   <div
@@ -51,86 +57,57 @@
     <p class="card-text">Pas je zoektermen aan en probeer opnieuw.</p>
   </div>
 </div>
-<% } else { %>
-<div>
-  <%- include('list.ejs', {events: result}); %>
-  <br />
-  <nav aria-label="Page navigation example">
-    <% if(pageInfo.totalPages > 1) { %>
-    <ul class="pagination">
-      <% if (currentPage > 0) { %>
-      <li class="page-item" id="previous">
-        <a
-          class="page-link"
-          aria-label="Previous"
-          onclick="window.location.href = '?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage - 1 %>'"
-        >
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only"></span>
-        </a>
-      </li>
-      <% } %> <% let pageAmount; let activeNumber; %> <% pageInfo.totalPages >
-      20 ? pageAmount = 20 : pageAmount = pageInfo.totalPages %> <% if
-      (currentPage > 0){ %>
-      <li class="page-item" value="<%=0 %>">
-        <a
-          class="page-link"
-          href="#"
-          onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"
-          >1</a
-        >
-      </li>
-      <% } %> <% if (currentPage > 1){ %>
-      <li class="page-item"><a class="page-link">...</a></li>
-      <% } %> <% for(var i = 0 ; i < pageAmount; i++) { %> <% if
-      ((i+currentPage) == currentPage) {%>
-      <li class="page-item active" value="<%=i+currentPage %>">
-        <a
-          class="page-link"
-          href="#"
-          onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"
-          ><%= (i + currentPage) +1 %></a
-        >
-      </li>
-      <% } else { %>
-      <li class="page-item" value="<%=i+currentPage %>">
-        <a
-          class="page-link"
-          href="#"
-          onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"
-          ><%= (i + currentPage) +1 %></a
-        >
-      </li>
-      <% } %> <% } %> <% if (currentPage < pageInfo.totalPages - 1){ %>
-      <li class="page-item"><a class="page-link">...</a></li>
+<% } else {  %>
+  <div>
+    <%- include('list.ejs', {events: result}); %>
+    <br/>
+    <nav aria-label="Page navigation example" >
+      <% if(pageInfo.totalPages > 1) { %>
+      <ul class="pagination">
+        <% if (currentPage > 0) { %>
+        <li class="page-item" id="previous">
+          <a class="page-link" aria-label="Previous" onclick="window.location.href = '?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage - 1 %>'">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only"></span>
+          </a>
+        </li>
+        <% } %>
+        <% let pageAmount; let activeNumber; %>
+        <% pageInfo.totalPages > 20 ? pageAmount = 20 : pageAmount = pageInfo.totalPages %>
+        <% if (currentPage > 0){ %>
+          <li class="page-item" value="<%=0 %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`">1</a></li>
+        <% } %>
+        <% if (currentPage > 1){ %>
+          <li class="page-item"><a class="page-link">...</a></li>
+        <% } %>
+        <% for(var i = 0 ; i < pageAmount; i++) { %>
+          <% if ((i+currentPage) == currentPage) {%>
+          <li class="page-item active" value="<%=i+currentPage %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"><%= (i + currentPage) +1 %></a></li>
+          <% } else { %>
+            <li class="page-item" value="<%=i+currentPage %>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=${this.parentElement.value}`"><%= (i + currentPage) +1 %></a></li>
+          <% } %>
+        <% } %>
+        <% if (currentPage < pageInfo.totalPages - 1){ %>
+          <li class="page-item"><a class="page-link">...</a></li>
+        <% } %>
+        <li class="page-item" value="<%=pageInfo.totalPages%>"><a class="page-link" href="#" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=pageInfo.totalPages-1 %>`"><%= pageInfo.totalPages %></a></li>
+        <% if(currentPage != pageInfo.totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" aria-label="Next" onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage + 1 %>`">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only"></span>
+          </a>
+        </li>
+        <% } %>
+      </ul>
       <% } %>
-      <li class="page-item" value="<%=pageInfo.totalPages%>">
-        <a
-          class="page-link"
-          href="#"
-          onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=pageInfo.totalPages-1 %>`"
-          ><%= pageInfo.totalPages %></a
-        >
-      </li>
-      <% if(currentPage != pageInfo.totalPages) { %>
-      <li class="page-item">
-        <a
-          class="page-link"
-          aria-label="Next"
-          onclick="window.location.href = `?<%=currentKeyword %><%=currentCity %>&page=<%=currentPage + 1 %>`"
-        >
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only"></span>
-        </a>
-      </li>
-      <% } %>
-    </ul>
-    <% } %>
-  </nav>
-</div>
-
-<% } %>
-
-<!--
+    </nav>
+  </div>
+  
+  <% } %>
+  
+  <!--
   
   -->
+
+
