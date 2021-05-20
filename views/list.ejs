@@ -1,4 +1,5 @@
 <% events.forEach(function(listview, index) {%>
+    
     <div class="accordion">
         <div class="accordion-item">
             <div class="accordion-header" id="heading<%= index %>">
@@ -10,9 +11,10 @@
             </div>
             <div id="collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="heading<%= index %>" data-parent="#accordion">
                 <div class="accordion-body">
-                <%- include('details.ejs', {eventData: listview, index: index}); %>
+                <%- include('details.ejs', {eventData: listview}); %>
                 </div>
               </div>
         </div>
     </div>
+    
 <%});%>
