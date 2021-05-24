@@ -61,8 +61,6 @@ router.get("/", async (req, res, next) => {
       if (json.page.totalElements === 0) {
         res.render("index", { result: 0 });
       } else {
-        console.log("test", json.page.totalElements);
-
         res.render("index", {
           result: json._embedded.events,
           pageInfo: json.page,
@@ -75,38 +73,5 @@ router.get("/", async (req, res, next) => {
     })
     .catch((e) => console.error(e));
 });
-
-router.get("/details/:id", async (req, res, next) => {
-  let eventId = req.params.id;
-  if (eventId) {
-    let eventData = await fetch(
-      `https://app.ticketmaster.com/discovery/v2/events/${eventId}?apikey=${process.env.API_KEY}&locale=*`
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.errors)
-          return res.sendStatus(Number.parseInt(json.errors[0].status));
-        else return res.render("details", { eventData: json });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-});
-
-router.get("/list", async (req, res, next) => {
-  const allEvents = await loadAllEventData();
-  res.render("list", { allEvents: allEvents });
-});
-
-const loadAllEventData = async () => {
-  let response = await fetch(
-    `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.API_KEY}&locale=*`
-  );
-  let json = await response.json();
-  let event = json._embedded.events;
-
-  return event;
-};
 
 module.exports = router;

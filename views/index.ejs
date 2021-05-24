@@ -35,9 +35,8 @@
     keyword = document.getElementById("keyword").value;
     city = document.getElementById("city").value;
     window.location.replace(
-      `http://localhost:5000/?keyword=${keyword}&city=${city}`
+      `http://localhost:5000/?keyword=${keyword}&city=${city}&page=0`
     );
-    console.log(name);
   }
 </script>
 
@@ -97,7 +96,6 @@
       <% } %>
     </nav>
   </div>
-  
   <% } %>
   
   <!--
